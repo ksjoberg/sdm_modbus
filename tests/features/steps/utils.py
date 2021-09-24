@@ -102,9 +102,18 @@ def step_impl(context):
     context.result = context.meter.read_all()
     print(context.result)
 
+@when('we read the {} subset of values')
+def step_impl(context, csv):
+    keys_to_read = csv.split(',')
+    context.result = context.meter.read_all(keys=keys_to_read)
+
 @then('the result key "{}" should be equal to {}')
 def step_impl(context, key, value):
     assert_that(context.result, has_entries(key, equal_to(eval(value))))
+
+@then('the result should be equal to')
+def step_impl(context):
+    assert_that(context.result, equal_to(eval(context.text)))
 
 @then('the result key "{}" should be within {:f} of {:f}')
 def step_impl(context, key, delta, value):

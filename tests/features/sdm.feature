@@ -41,3 +41,12 @@ Feature: Reading SDM meter values
     And the result key "total_import_active_power" should be equal to 30000.0
     And the result key "total_export_active_power" should be equal to 40000.0
     And the result key "total_kwh" should be within 0.0001 of 0.7
+
+    When we read the total_system_power,total_import_kwh subset of values
+    Then the result should be equal to
+        """
+        {
+            "total_system_power": 700.0,
+            "total_import_kwh": 10000.0
+        }
+        """

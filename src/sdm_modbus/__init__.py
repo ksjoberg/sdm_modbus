@@ -275,11 +275,12 @@ class SDM:
 
         return self._write(self.registers[key], data)
 
-    def read_all(self, rtype=registerType.INPUT):
-        registers = {k: v for k, v in self.registers.items() if (v[2] == rtype)}
+    def read_all(self, rtype=registerType.INPUT, keys=None):
+        registers = {k: v for k, v in self.registers.items() if ((v[2] == rtype) and (keys is None or k in keys))}
         results = {}
 
-        for batch in range(1, max(len(registers), 2)):
+        batches = set([v[7] for k, v in registers.items()])
+        for batch in batches:
             register_batch = {k: v for k, v in registers.items() if (v[7] == batch)}
 
             if not register_batch:
